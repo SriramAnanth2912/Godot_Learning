@@ -5,7 +5,7 @@ var score : int ## player score
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass
+	new_game()
 
 
  #Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -45,7 +45,10 @@ func _on_mob_timer_timeout() -> void:
 	# Choose the velocity for the mob.
 	var velocity = Vector2(randf_range(150.0, 250.0), 0.0)
 	mob.linear_velocity = velocity.rotated(direction)
-
+	
+	# this line offsets the path of the mob, making it spawn further back
+	mob.position -= Vector2(100, 0).rotated(direction)
+	
 	# Spawn the mob by adding it to the Main scene.
 	add_child(mob)
 

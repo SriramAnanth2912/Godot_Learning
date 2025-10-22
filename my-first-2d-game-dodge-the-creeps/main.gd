@@ -9,6 +9,8 @@ func _ready() -> void:
 
 
 func game_over():
+	$Music.stop()
+	$DeathSound.play()
 	$ScoreTimer.stop()
 	$MobTimer.stop()
 	$HUD.show_game_over()
@@ -16,6 +18,8 @@ func game_over():
 
 func new_game():
 	get_tree().call_group("mobs", "queue_free")
+	$DeathSound.stop()
+	$Music.play()
 	score = 0
 	$HUD.update_score(score)
 	$HUD.show_message("Get Ready")

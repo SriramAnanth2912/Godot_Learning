@@ -9,7 +9,7 @@ var player_size: Vector2 ## player size
 
 func _ready() -> void:
 	screen_size = get_viewport_rect().size
-	hide()
+	#hide()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

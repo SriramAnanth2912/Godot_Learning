@@ -46,7 +46,7 @@ animations = [{
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_jbnni"]
 radius = 36.0
-height = 94.0
+height = 100.0
 
 [node name="Mob" type="RigidBody2D"]
 collision_mask = 0

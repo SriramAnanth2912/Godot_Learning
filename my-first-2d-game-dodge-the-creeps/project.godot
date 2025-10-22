@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="my_first_2D_game_dodge_the_creeps"
-run/main_scene="uid://cghc6hl5nrj0r"
+run/main_scene="uid://dels3146tq2lg"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://icon.svg"
 

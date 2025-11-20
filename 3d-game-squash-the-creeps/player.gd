@@ -4,6 +4,8 @@ extends CharacterBody3D
 @export var speed: float = 14
 # The downward acceleration when in the air, in meters per second squared.
 @export var fall_acceleration: float = 75
+# Vertical impulse applied to the character upon jumping in meters per second.
+@export var jump_impulse: int = 20
 
 var target_velocity: Vector3= Vector3.ZERO
 
@@ -39,3 +41,6 @@ func _physics_process(delta: float) -> void:
 	# Moving the Character
 	velocity = target_velocity
 	move_and_slide()
+	# Jumping.
+	if is_on_floor() and Input.is_action_just_pressed("jump"):
+		target_velocity.y = jump_impulse

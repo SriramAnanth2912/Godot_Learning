@@ -1,5 +1,8 @@
 extends CharacterBody3D
 
+# Emitted when the player was hit by a mob.
+signal hit
+
 # How fast the player moves in meters per second.
 @export var speed: float = 14
 # The downward acceleration when in the air, in meters per second squared.
@@ -41,9 +44,6 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor(): # If in the air, fall towards the floor. Literally gravity
 		target_velocity.y = target_velocity.y - (fall_acceleration * delta)
 
-	# Moving the Character
-	velocity = target_velocity
-	move_and_slide()
 	# Jumping.
 	if is_on_floor() and Input.is_action_just_pressed("jump"):
 		target_velocity.y = jump_impulse
@@ -65,9 +65,24 @@ func _physics_process(delta: float) -> void:
 		if collision.get_collider().is_in_group("mob"):
 			var mob: Object = collision.get_collider()
 			# we check that we are hitting it from above.
-			if Vector3.UP.dot(collision.get_normal()) > 0.1:
+			# print(Vector3.UP.dot(collision.get_normal())) # always above 0.25 and below 0.4 
+			# so > 0.1 won't work!
+			if Vector3.UP.dot(collision.get_normal()) > 0.25:
 				# If so, we squash it and bounce.
 				mob.squash()
 				target_velocity.y = bounce_impulse
 				# Prevent further duplicate calls.
 				break
+				
+	# Moving the Character
+	velocity = target_velocity
+	move_and_slide()
+
+
+func die() -> void:
+	hit.emit()
+	queue_free()
+
+
+func _on_mob_detector_body_entered(_body: Node3D) -> void:
+	die()

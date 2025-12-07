@@ -13,9 +13,23 @@ signal hit
 # meters per second.
 @export var bounce_impulse: float = 16
 
+@onready var spawn_path: Path3D = $"../SpawnPath" # can also just use $"../SpawnPath"
+
+var path_bounds: Vector3
 var target_velocity: Vector3= Vector3.ZERO
 
+func _ready() -> void:
+	# Calculate path bounds
+	var curve: Curve3D = spawn_path.curve
+	var aabb: AABB = AABB()  # Creates empty bounding box
+	
+	# Expand box to include all path points
+	for i: int in curve.point_count:
+		aabb = aabb.expand(curve.get_point_position(i))
 
+	path_bounds = aabb.size
+	
+	
 func _physics_process(delta: float) -> void:
 	# We create a local variable to store the input direction.
 	var direction: Vector3 = Vector3.ZERO
@@ -65,9 +79,8 @@ func _physics_process(delta: float) -> void:
 		if collision.get_collider().is_in_group("mob"):
 			var mob: Object = collision.get_collider()
 			# we check that we are hitting it from above.
-			# print(Vector3.UP.dot(collision.get_normal())) # always above 0.25 and below 0.4 
-			# so > 0.1 won't work!
-			if Vector3.UP.dot(collision.get_normal()) > 0.25:
+			#print(Vector3.UP.dot(collision.get_normal()))
+			if Vector3.UP.dot(collision.get_normal()) > 0.1:
 				# If so, we squash it and bounce.
 				mob.squash()
 				target_velocity.y = bounce_impulse
@@ -76,6 +89,9 @@ func _physics_process(delta: float) -> void:
 				
 	# Moving the Character
 	velocity = target_velocity
+	
+	position.x = clamp(position.x, -path_bounds.x/2, path_bounds.x/2)
+	position.z = clamp(position.z, -path_bounds.z/2, path_bounds.z/2)
 	move_and_slide()
 
 
@@ -85,4 +101,5 @@ func die() -> void:
 
 
 func _on_mob_detector_body_entered(_body: Node3D) -> void:
+	print("hit!")
 	die()

@@ -101,5 +101,5 @@ func die() -> void:
 
 
 func _on_mob_detector_body_entered(_body: Node3D) -> void:
-	print("hit!")
+	print_debug("hit!")
 	die()

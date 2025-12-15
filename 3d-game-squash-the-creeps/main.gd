@@ -29,6 +29,6 @@ func _on_player_hit() -> void:
 	$UserInterface/Retry.show()
 	
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_accept") & $UserInterface/Retry.visible:
+	if event.is_action_pressed("ui_accept") and $UserInterface/Retry.visible:
 		# This restarts the current scene.
 		get_tree().reload_current_scene()

@@ -60,6 +60,7 @@ func _physics_process(delta: float) -> void:
 	# Vertical Velocity
 	if not is_on_floor(): # If in the air, fall towards the floor. Literally gravity
 		target_velocity.y = target_velocity.y - (fall_acceleration * delta)
+		$AnimationPlayer.speed_scale = 0
 
 	# Jumping.
 	if is_on_floor() and Input.is_action_just_pressed("jump"):
@@ -82,7 +83,6 @@ func _physics_process(delta: float) -> void:
 		if collision.get_collider().is_in_group("mob"):
 			var mob: Object = collision.get_collider()
 			# we check that we are hitting it from above.
-			#print(Vector3.UP.dot(collision.get_normal()))
 			if Vector3.UP.dot(collision.get_normal()) > 0.1:
 				# If so, we squash it and bounce.
 				mob.squash()

@@ -4,7 +4,7 @@ extends CharacterBody3D
 signal squashed
 
 # Minimum speed of the mob in meters per second.
-@export var min_speed: int= 10
+@export var min_speed: int = 10
 # Maximum speed of the mob in meters per second.
 @export var max_speed: int = 18
 
@@ -29,6 +29,7 @@ func initialize(start_position: Vector3, player_position: Vector3) -> void:
 	# We then rotate the velocity vector based on the mob's Y rotation
 	# in order to move in the direction the mob is looking.
 	velocity = velocity.rotated(Vector3.UP, rotation.y)
+	$AnimationPlayer.speed_scale = (random_speed + 0.0) / min_speed
 
 
 func _on_visible_on_screen_notifier_3d_screen_exited() -> void:
